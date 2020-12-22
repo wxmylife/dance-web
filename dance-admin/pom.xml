@@ -12,7 +12,6 @@
     <artifactId>dance-admin</artifactId>
     <packaging>jar</packaging>
 
-
     <dependencies>
         <dependency>
             <groupId>com.mw.dance</groupId>

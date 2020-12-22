@@ -1,14 +1,13 @@
 package com.mw.dance.common.exception;
 
 import com.mw.dance.common.api.CommonResult;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 
 /**
  * @author wxmylife
@@ -33,7 +32,7 @@ public class GlobalExceptionHandler {
     if (bindingResult.hasErrors()) {
       FieldError fieldError = bindingResult.getFieldError();
       if (fieldError != null) {
-        message = fieldError.getField()+fieldError.getDefaultMessage();
+        message = fieldError.getField() + fieldError.getDefaultMessage();
       }
     }
     return CommonResult.validateFailed(message);
@@ -47,7 +46,7 @@ public class GlobalExceptionHandler {
     if (bindingResult.hasErrors()) {
       FieldError fieldError = bindingResult.getFieldError();
       if (fieldError != null) {
-        message = fieldError.getField()+fieldError.getDefaultMessage();
+        message = fieldError.getField() + fieldError.getDefaultMessage();
       }
     }
     return CommonResult.validateFailed(message);

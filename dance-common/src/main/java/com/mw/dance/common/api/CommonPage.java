@@ -1,9 +1,9 @@
 package com.mw.dance.common.api;
 
 import com.github.pagehelper.PageInfo;
-import org.springframework.data.domain.Page;
 import java.util.List;
 import lombok.Data;
+import org.springframework.data.domain.Page;
 
 /**
  * @author wxmylife

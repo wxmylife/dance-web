@@ -4,7 +4,6 @@ import com.mw.dance.common.config.BaseSwaggerConfig;
 import com.mw.dance.common.domain.SwaggerProperties;
 import org.springframework.context.annotation.Configuration;
 import springfox.documentation.oas.annotations.EnableOpenApi;
-import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 /**
  * @author wxmylife

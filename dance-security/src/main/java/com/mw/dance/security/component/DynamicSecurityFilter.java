@@ -48,7 +48,7 @@ public class DynamicSecurityFilter extends AbstractSecurityInterceptor implement
     HttpServletRequest request = (HttpServletRequest) servletRequest;
     FilterInvocation fi = new FilterInvocation(servletRequest, servletResponse, filterChain);
 
-    LOGGER.info("请求路径为:{},请求方式为:{}", request.getRequestURI(),request.getMethod());
+    LOGGER.info("请求路径为:{},请求方式为:{}", request.getRequestURI(), request.getMethod());
 
     //OPTIONS请求直接放行
     if (request.getMethod().equals(HttpMethod.OPTIONS.toString())) {

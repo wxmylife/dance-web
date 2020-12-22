@@ -1,7 +1,5 @@
 package com.mw.dance.dto;
 
-import io.swagger.annotations.ApiModelProperty;
-import javax.validation.constraints.NotEmpty;
 import lombok.Getter;
 import lombok.Setter;
 

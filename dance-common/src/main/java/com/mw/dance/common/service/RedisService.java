@@ -9,7 +9,6 @@ import java.util.Set;
  */
 public interface RedisService {
 
-
   /**
    * 保存属性
    */

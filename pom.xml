@@ -9,7 +9,6 @@
     <name>dance</name>
     <packaging>pom</packaging>
 
-
     <modules>
         <module>dance-common</module>
         <module>dance-mbg</module>

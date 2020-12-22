@@ -5,6 +5,7 @@ import lombok.EqualsAndHashCode;
 
 /**
  * Controller 层的日志封装
+ *
  * @author wxmylife
  */
 @Data

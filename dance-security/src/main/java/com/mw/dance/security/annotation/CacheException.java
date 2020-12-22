@@ -8,6 +8,7 @@ import java.lang.annotation.Target;
 
 /**
  * 自定义注解，有该注解的缓存方法会抛出异常
+ *
  * @author wxmylife
  */
 @Documented
@@ -15,4 +16,3 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface CacheException {
 }
-

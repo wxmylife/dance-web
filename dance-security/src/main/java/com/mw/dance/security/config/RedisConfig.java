@@ -5,6 +5,8 @@ import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Configuration;
 
 /**
+ * Redis配置类
+ *
  * @author wxmylife
  */
 @EnableCaching

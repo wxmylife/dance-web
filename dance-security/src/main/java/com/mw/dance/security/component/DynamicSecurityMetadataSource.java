@@ -3,6 +3,7 @@ package com.mw.dance.security.component;
 import cn.hutool.core.util.URLUtil;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.PostConstruct;
@@ -21,7 +22,6 @@ import org.springframework.util.PathMatcher;
 public class DynamicSecurityMetadataSource implements FilterInvocationSecurityMetadataSource {
 
   private static Map<String, ConfigAttribute> configAttributeMap = null;
-
   @Autowired
   private DynamicSecurityService dynamicSecurityService;
 
@@ -35,16 +35,18 @@ public class DynamicSecurityMetadataSource implements FilterInvocationSecurityMe
     configAttributeMap = null;
   }
 
-  @Override public Collection<ConfigAttribute> getAttributes(Object o) throws IllegalArgumentException {
-    if (configAttributeMap == null) {
-      this.loadDataSource();
-    }
+  @Override
+  public Collection<ConfigAttribute> getAttributes(Object o) throws IllegalArgumentException {
+    if (configAttributeMap == null) this.loadDataSource();
     List<ConfigAttribute> configAttributes = new ArrayList<>();
-    // 获取当前访问的路径
+    //获取当前访问的路径
     String url = ((FilterInvocation) o).getRequestUrl();
     String path = URLUtil.getPath(url);
     PathMatcher pathMatcher = new AntPathMatcher();
-    for (String pattern : configAttributeMap.keySet()) {
+    Iterator<String> iterator = configAttributeMap.keySet().iterator();
+    //获取访问该路径所需资源
+    while (iterator.hasNext()) {
+      String pattern = iterator.next();
       if (pathMatcher.match(pattern, path)) {
         configAttributes.add(configAttributeMap.get(pattern));
       }
@@ -53,11 +55,14 @@ public class DynamicSecurityMetadataSource implements FilterInvocationSecurityMe
     return configAttributes;
   }
 
-  @Override public Collection<ConfigAttribute> getAllConfigAttributes() {
+  @Override
+  public Collection<ConfigAttribute> getAllConfigAttributes() {
     return null;
   }
 
-  @Override public boolean supports(Class<?> aClass) {
+  @Override
+  public boolean supports(Class<?> aClass) {
     return true;
   }
+
 }

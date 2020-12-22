@@ -9,9 +9,11 @@ spring:
       max-active: 20 #最大连接数
       web-stat-filter:
         exclusions: "*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*" #不统计这些请求数据
+
       stat-view-servlet: #访问监控网页的登录用户名和密码
         login-username: druid
         login-password: druid
+
   redis:
     host: localhost # Redis服务器地址
     database: 0 # Redis数据库索引（默认为0）
@@ -23,6 +25,10 @@ logging:
   level:
     root: info
     com.mw.dance: debug
+
+server:
+  port: 8888
+
 
 logstash:
   host: localhost

@@ -1,4 +1,4 @@
-package com.mw.dance.security.aspect;
+package com.mw.dance.security.ascept;
 
 import com.mw.dance.security.annotation.CacheException;
 import java.lang.reflect.Method;
@@ -15,16 +15,16 @@ import org.springframework.stereotype.Component;
 
 /**
  * Redis缓存切面，防止Redis宕机影响正常业务逻辑
+ *
  * @author wxmylife
  */
 @Aspect
 @Component
 @Order(2)
 public class RedisCacheAspect {
+  private static final Logger LOGGER = LoggerFactory.getLogger(RedisCacheAspect.class);
 
-  private static Logger LOGGER = LoggerFactory.getLogger(RedisCacheAspect.class);
-
-  @Pointcut("execution(public * com.macro.mall.portal.service.*CacheService.*(..)) || execution(public * com.macro.mall.service.*CacheService.*(..))")
+  @Pointcut("execution(public * com.mw.dance.portal.service.*CacheService.*(..)) || execution(public * com.mw.dance.service.*CacheService.*(..))")
   public void cacheAspect() {
   }
 
@@ -46,4 +46,5 @@ public class RedisCacheAspect {
     }
     return result;
   }
+
 }

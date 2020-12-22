@@ -23,23 +23,21 @@ import org.springframework.web.filter.OncePerRequestFilter;
  * @author wxmylife
  */
 public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
-
   private static final Logger LOGGER = LoggerFactory.getLogger(JwtAuthenticationTokenFilter.class);
-
   @Autowired
   private UserDetailsService userDetailsService;
-
   @Autowired
   private JwtTokenUtil jwtTokenUtil;
-
   @Value("${jwt.tokenHeader}")
   private String tokenHeader;
-
   @Value("${jwt.tokenHead}")
   private String tokenHead;
 
-  @Override protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
-    String authHeader = httpServletRequest.getHeader(this.tokenHeader);
+  @Override
+  protected void doFilterInternal(HttpServletRequest request,
+                                  HttpServletResponse response,
+                                  FilterChain chain) throws ServletException, IOException {
+    String authHeader = request.getHeader(this.tokenHeader);
     if (authHeader != null && authHeader.startsWith(this.tokenHead)) {
       String authToken = authHeader.substring(this.tokenHead.length());
       String username = jwtTokenUtil.getUserNameFromToken(authToken);
@@ -48,12 +46,12 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
         UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
         if (jwtTokenUtil.validateToken(authToken, userDetails)) {
           UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-          authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(httpServletRequest));
+          authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
           LOGGER.info("authenticated user:{}", username);
           SecurityContextHolder.getContext().setAuthentication(authentication);
         }
       }
     }
-    filterChain.doFilter(httpServletRequest, httpServletResponse);
+    chain.doFilter(request, response);
   }
 }

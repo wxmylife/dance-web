@@ -23,7 +23,7 @@ public class UmsAdminController {
 
   @ApiOperation("获取验证码")
   @PostMapping(value = "/getAuthCode")
-  public CommonResult getAuthCode(@RequestParam String telephone) {
+  public CommonResult<String> getAuthCode(@RequestParam String telephone) {
     String authCode = adminService.generateAuthCode(telephone);
     return CommonResult.success(authCode, "获取验证码成功");
   }

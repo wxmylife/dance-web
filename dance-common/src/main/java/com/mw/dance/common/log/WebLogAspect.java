@@ -5,32 +5,35 @@ import cn.hutool.core.util.URLUtil;
 import cn.hutool.json.JSONUtil;
 import com.mw.dance.common.domain.WebLog;
 import io.swagger.annotations.ApiOperation;
-import net.logstash.logback.marker.Markers;
-import org.aspectj.lang.JoinPoint;
-import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.Signature;
-import org.aspectj.lang.annotation.*;
-import org.aspectj.lang.reflect.MethodSignature;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.core.annotation.Order;
-import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
-
-import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.servlet.http.HttpServletRequest;
+import net.logstash.logback.marker.Markers;
+import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.Signature;
+import org.aspectj.lang.annotation.AfterReturning;
+import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Before;
+import org.aspectj.lang.annotation.Pointcut;
+import org.aspectj.lang.reflect.MethodSignature;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.core.annotation.Order;
+import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 /**
  * 统一日志处理
+ *
  * @author wxmylife
  */
 @Aspect
@@ -79,12 +82,12 @@ public class WebLogAspect {
     webLog.setStartTime(startTime);
     webLog.setUri(request.getRequestURI());
     webLog.setUrl(request.getRequestURL().toString());
-    Map<String,Object> logMap = new HashMap<>();
-    logMap.put("url",webLog.getUrl());
-    logMap.put("method",webLog.getMethod());
-    logMap.put("parameter",webLog.getParameter());
-    logMap.put("spendTime",webLog.getSpendTime());
-    logMap.put("description",webLog.getDescription());
+    Map<String, Object> logMap = new HashMap<>();
+    logMap.put("url", webLog.getUrl());
+    logMap.put("method", webLog.getMethod());
+    logMap.put("parameter", webLog.getParameter());
+    logMap.put("spendTime", webLog.getSpendTime());
+    logMap.put("description", webLog.getDescription());
     //        LOGGER.info("{}", JSONUtil.parse(webLog));
     LOGGER.info(Markers.appendEntries(logMap), JSONUtil.parse(webLog).toString());
     return result;
@@ -107,7 +110,7 @@ public class WebLogAspect {
       if (requestParam != null) {
         Map<String, Object> map = new HashMap<>();
         String key = parameters[i].getName();
-        if (!StringUtils.isEmpty(requestParam.value())) {
+        if (StrUtil.isNotEmpty(requestParam.value())) {
           key = requestParam.value();
         }
         map.put(key, args[i]);
@@ -122,6 +125,5 @@ public class WebLogAspect {
       return argList;
     }
   }
-
 
 }

@@ -30,8 +30,7 @@ public class DanceSecurityConfig extends SecurityConfig {
   @Autowired
   private UmsResourceService resourceService;
 
-  @Bean
-  @Override
+  @Override @Bean
   public UserDetailsService userDetailsService() {
     //获取登录用户信息
     return username -> adminService.loadUserByUsername(username);

@@ -15,12 +15,13 @@ import org.springframework.security.web.AuthenticationEntryPoint;
  * @author wxmylife
  */
 public class RestAuthenticationEntryPoint implements AuthenticationEntryPoint {
-  @Override public void commence(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AuthenticationException e) throws IOException, ServletException {
-    httpServletResponse.setHeader("Access-Control-Allow-Origin", "*");
-    httpServletResponse.setHeader("Cache-Control", "no-cache");
-    httpServletResponse.setCharacterEncoding("UTF-8");
-    httpServletResponse.setContentType("application/json");
-    httpServletResponse.getWriter().println(JSONUtil.parse(CommonResult.unauthorized(e.getMessage())));
-    httpServletResponse.getWriter().flush();
+  @Override
+  public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
+    response.setHeader("Access-Control-Allow-Origin", "*");
+    response.setHeader("Cache-Control", "no-cache");
+    response.setCharacterEncoding("UTF-8");
+    response.setContentType("application/json");
+    response.getWriter().println(JSONUtil.parse(CommonResult.unauthorized(authException.getMessage())));
+    response.getWriter().flush();
   }
 }

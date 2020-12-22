@@ -32,22 +32,24 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
  */
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(JwtAuthenticationTokenFilter.class);
-
   @Autowired(required = false)
   private DynamicSecurityService dynamicSecurityService;
 
-  @Override protected void configure(HttpSecurity http) throws Exception {
-    ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry registry = http.authorizeRequests();
-    // 不需要保护的资源允许访问
+  private static final Logger LOGGER = LoggerFactory.getLogger(SecurityConfig.class);
+
+  @Override
+  protected void configure(HttpSecurity httpSecurity) throws Exception {
+    ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry registry = httpSecurity
+        .authorizeRequests();
+    // 不需要保护的资源路径允许访问
     for (String url : ignoreUrlsConfig().getUrls()) {
-      LOGGER.info("不需要保护的资源路径:{}", url);
+      LOGGER.info("不需要资源保护的路径:{}", url);
       registry.antMatchers(url).permitAll();
     }
-    // 允许跨域请求的 OPTIONS 请求
+    // 允许跨域请求的OPTIONS请求
     registry.antMatchers(HttpMethod.OPTIONS)
         .permitAll();
-    // 任何请求需要身份验证
+    // 任何请求需要身份认证
     registry.and()
         .authorizeRequests()
         .anyRequest()
@@ -58,7 +60,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .disable()
         .sessionManagement()
         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-        // 自定义权限拒绝处理
+        // 自定义权限拒绝处理类
         .and()
         .exceptionHandling()
         .accessDeniedHandler(restfulAccessDeniedHandler())
@@ -72,7 +74,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
   }
 
-  @Override protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+  @Override
+  protected void configure(AuthenticationManagerBuilder auth) throws Exception {
     auth.userDetailsService(userDetailsService())
         .passwordEncoder(passwordEncoder());
   }
@@ -130,5 +133,4 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
   public DynamicSecurityMetadataSource dynamicSecurityMetadataSource() {
     return new DynamicSecurityMetadataSource();
   }
-
 }

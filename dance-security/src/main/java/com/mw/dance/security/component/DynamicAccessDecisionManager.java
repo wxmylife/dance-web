@@ -17,13 +17,17 @@ import org.springframework.security.core.GrantedAuthority;
  */
 public class DynamicAccessDecisionManager implements AccessDecisionManager {
 
-  @Override public void decide(Authentication authentication, Object o, Collection<ConfigAttribute> collection) throws AccessDeniedException, InsufficientAuthenticationException {
+  @Override
+  public void decide(Authentication authentication, Object object,
+                     Collection<ConfigAttribute> configAttributes) throws AccessDeniedException, InsufficientAuthenticationException {
     // 当接口未被配置资源时直接放行
-    if (CollUtil.isEmpty(collection)) {
+    if (CollUtil.isEmpty(configAttributes)) {
       return;
     }
-    for (ConfigAttribute configAttribute : collection) {
-      // 将访问所需资源或用户拥有资源进行比对
+    Iterator<ConfigAttribute> iterator = configAttributes.iterator();
+    while (iterator.hasNext()) {
+      ConfigAttribute configAttribute = iterator.next();
+      //将访问所需资源或用户拥有资源进行比对
       String needAuthority = configAttribute.getAttribute();
       for (GrantedAuthority grantedAuthority : authentication.getAuthorities()) {
         if (needAuthority.trim().equals(grantedAuthority.getAuthority())) {
@@ -31,14 +35,17 @@ public class DynamicAccessDecisionManager implements AccessDecisionManager {
         }
       }
     }
-    throw new AccessDeniedException("抱歉,您没有访问权限");
+    throw new AccessDeniedException("抱歉，您没有访问权限");
   }
 
-  @Override public boolean supports(ConfigAttribute configAttribute) {
+  @Override
+  public boolean supports(ConfigAttribute configAttribute) {
     return true;
   }
 
-  @Override public boolean supports(Class<?> aClass) {
+  @Override
+  public boolean supports(Class<?> aClass) {
     return true;
   }
+
 }

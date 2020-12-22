@@ -23,13 +23,13 @@ redis:
     authCode: 'ums:authCode'
   expire:
     common: 86400 # 24小时
-    authCode: 90
+    authCode: 90 # 验证码保存90秒
 
 
 secure:
   ignored:
     urls: #安全路径白名单
-      - /swagger-ui.html
+      - /swagger-ui/**
       - /swagger-resources/**
       - /swagger/**
       - /**/v2/api-docs
@@ -40,9 +40,9 @@ secure:
       - /webjars/springfox-swagger-ui/**
       - /actuator/**
       - /druid/**
-      - /admin/login
-      - /admin/register
-      - /admin/getAuthCode
-      - /admin/info
-      - /admin/logout
+      - /v1/admin/login
+      - /v1/admin/register
+      - /v1/admin/getAuthCode
+      - /v1/admin/info
+      - /v1/admin/logout
       - /minio/upload

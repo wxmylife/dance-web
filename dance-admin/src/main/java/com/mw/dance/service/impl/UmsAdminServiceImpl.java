@@ -6,7 +6,9 @@ import cn.hutool.core.util.StrUtil;
 import com.mw.dance.bo.AdminUserDetails;
 import com.mw.dance.common.exception.Asserts;
 import com.mw.dance.common.util.RequestUtil;
+import com.mw.dance.dto.ForgetAdminPasswordParam;
 import com.mw.dance.dto.UmsRegisterParam;
+import com.mw.dance.dto.UpdateAdminPasswordParam;
 import com.mw.dance.mapper.UmsAdminLoginLogMapper;
 import com.mw.dance.mapper.UmsAdminMapper;
 import com.mw.dance.model.UmsAdmin;
@@ -170,6 +172,58 @@ public class UmsAdminServiceImpl implements UmsAdminService {
       return new AdminUserDetails(admin, resourceList);
     }
     throw new UsernameNotFoundException("用户名或密码错误");
+  }
+
+  @Override public int forgetPassword(ForgetAdminPasswordParam forgetParam) {
+    if (StrUtil.isEmpty(forgetParam.getTelephone())
+        || StrUtil.isEmpty(forgetParam.getCode())
+        || StrUtil.isEmpty(forgetParam.getNewPassword())) {
+      return -1;
+    }
+
+    // 验证码校验
+    if (!verifyAuthCode(forgetParam.getCode(), forgetParam.getTelephone())) {
+      Asserts.fail("验证码错误");
+    }
+
+    UmsAdminExample example = new UmsAdminExample();
+    example.createCriteria().andTelephoneEqualTo(forgetParam.getTelephone());
+    List<UmsAdmin> adminList = adminMapper.selectByExample(example);
+    if (CollUtil.isEmpty(adminList)) {
+      return -2;
+    }
+    UmsAdmin umsAdmin = adminList.get(0);
+    umsAdmin.setPassword(passwordEncoder.encode(forgetParam.getNewPassword()));
+    adminMapper.updateByPrimaryKeySelective(umsAdmin);
+    adminCacheService.delAdmin(umsAdmin.getId());
+    return 1;
+  }
+
+  @Override public int updatePassword(UpdateAdminPasswordParam updateParam) {
+
+    if (StrUtil.isEmpty(updateParam.getTelephone())
+        || StrUtil.isEmpty(updateParam.getOldPassword())
+        || StrUtil.isEmpty(updateParam.getNewPassword())) {
+      return -1;
+    }
+    UmsAdminExample example = new UmsAdminExample();
+    example.createCriteria().andTelephoneEqualTo(updateParam.getTelephone());
+    List<UmsAdmin> adminList = adminMapper.selectByExample(example);
+    if (CollUtil.isEmpty(adminList)) {
+      return -2;
+    }
+    UmsAdmin umsAdmin = adminList.get(0);
+    if (!passwordEncoder.matches(updateParam.getOldPassword(), umsAdmin.getPassword())) {
+      return -3;
+    }
+    umsAdmin.setPassword(passwordEncoder.encode(updateParam.getNewPassword()));
+    adminMapper.updateByPrimaryKeySelective(umsAdmin);
+    adminCacheService.delAdmin(umsAdmin.getId());
+    return 1;
+  }
+
+  @Override public UmsAdmin getItem(Long id) {
+    return adminMapper.selectByPrimaryKey(id);
   }
 
   private boolean verifyAuthCode(String authCode, String telephone) {

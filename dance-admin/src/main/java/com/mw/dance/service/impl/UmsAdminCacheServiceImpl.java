@@ -3,6 +3,9 @@ package com.mw.dance.service.impl;
 import com.mw.dance.common.service.RedisService;
 import com.mw.dance.model.UmsAdmin;
 import com.mw.dance.service.UmsAdminCacheService;
+import com.mw.dance.service.UmsAdminService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -12,6 +15,11 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class UmsAdminCacheServiceImpl implements UmsAdminCacheService {
+
+  private static final Logger LOGGER = LoggerFactory.getLogger(UmsAdminCacheServiceImpl.class);
+
+  @Autowired
+  private UmsAdminService adminService;
 
   @Autowired
   private RedisService redisService;
@@ -52,6 +60,17 @@ public class UmsAdminCacheServiceImpl implements UmsAdminCacheService {
   @Override public void setAdmin(UmsAdmin admin) {
     String key = REDIS_DATABASE + ":" + REDIS_KEY_ADMIN + ":" + admin.getTelephone();
     redisService.set(key, admin, REDIS_EXPIRE);
+  }
+
+  @Override public void delAdmin(Long adminId) {
+    UmsAdmin admin = adminService.getItem(adminId);
+    if (admin != null) {
+      String key = REDIS_DATABASE + ":" + REDIS_KEY_ADMIN + ":" + admin.getTelephone();
+      redisService.del(key);
+      if (redisService.get(key) == null) {
+        LOGGER.warn("cache admin 删除成功");
+      }
+    }
 
   }
 }

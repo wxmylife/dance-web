@@ -1,6 +1,8 @@
 package com.mw.dance.service;
 
+import com.mw.dance.dto.ForgetAdminPasswordParam;
 import com.mw.dance.dto.UmsRegisterParam;
+import com.mw.dance.dto.UpdateAdminPasswordParam;
 import com.mw.dance.model.UmsAdmin;
 import com.mw.dance.model.UmsResource;
 import java.util.List;
@@ -22,4 +24,10 @@ public interface UmsAdminService {
   List<UmsResource> getResourceList(Long adminId);
 
   UserDetails loadUserByTelephone(String telephone);
+
+  int forgetPassword(ForgetAdminPasswordParam forgetParam);
+
+  int updatePassword(UpdateAdminPasswordParam updateParam);
+
+  UmsAdmin getItem(Long id);
 }

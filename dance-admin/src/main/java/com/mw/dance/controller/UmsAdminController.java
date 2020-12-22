@@ -2,8 +2,10 @@ package com.mw.dance.controller;
 
 import com.mw.dance.common.api.CommonResult;
 import com.mw.dance.common.util.RegexConstants;
+import com.mw.dance.dto.ForgetAdminPasswordParam;
 import com.mw.dance.dto.UmsLoginParam;
 import com.mw.dance.dto.UmsRegisterParam;
+import com.mw.dance.dto.UpdateAdminPasswordParam;
 import com.mw.dance.model.UmsAdmin;
 import com.mw.dance.service.UmsAdminService;
 import io.swagger.annotations.Api;
@@ -91,4 +93,33 @@ public class UmsAdminController {
     // tokenMap.put("tokenHead", tokenHead);
     return CommonResult.success(admin);
   }
+
+  @ApiOperation("修改指定用户密码")
+  @PostMapping(value = "/updatePassword")
+  public CommonResult updatePassword(@Validated @RequestBody UpdateAdminPasswordParam updateAdminPasswordParam) {
+    int status = adminService.updatePassword(updateAdminPasswordParam);
+    return handleChangePassword(status);
+  }
+
+  private CommonResult handleChangePassword(int status) {
+    if (status > 0) {
+      return CommonResult.success(status);
+    } else if (status == -1) {
+      return CommonResult.failed("提交参数不合法");
+    } else if (status == -2) {
+      return CommonResult.failed("找不到该用户");
+    } else if (status == -3) {
+      return CommonResult.failed("旧密码错误");
+    } else {
+      return CommonResult.failed();
+    }
+  }
+
+  @ApiOperation("忘记密码")
+  @PostMapping(value = "/forgetPassword")
+  public CommonResult forgetPassword(@Validated @RequestBody ForgetAdminPasswordParam forgetAdminPasswordParam) {
+    int status = adminService.forgetPassword(forgetAdminPasswordParam);
+    return handleChangePassword(status);
+  }
+
 }

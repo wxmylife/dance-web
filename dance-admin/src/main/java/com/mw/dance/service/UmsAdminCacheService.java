@@ -1,5 +1,7 @@
 package com.mw.dance.service;
 
+import com.mw.dance.model.UmsAdmin;
+
 /**
  * @author wxmylife
  */
@@ -20,4 +22,20 @@ public interface UmsAdminCacheService {
    * @return 验证码
    */
   String getAuthCode(String telephone);
+
+  /**
+   * 获取缓存用户信息
+   *
+   * @param telephone 手机号
+   * @return 后台用户
+   */
+  UmsAdmin getAdmin(String telephone);
+
+  /**
+   * 设置缓存后台用户数据
+   *
+   * @param admin 用户信息
+   */
+  void setAdmin(UmsAdmin admin);
+
 }

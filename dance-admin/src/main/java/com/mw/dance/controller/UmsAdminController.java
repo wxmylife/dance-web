@@ -1,13 +1,28 @@
 package com.mw.dance.controller;
 
 import com.mw.dance.common.api.CommonResult;
+import com.mw.dance.common.util.RegexConstants;
+import com.mw.dance.dto.UmsLoginParam;
+import com.mw.dance.dto.UmsRegisterParam;
+import com.mw.dance.model.UmsAdmin;
 import com.mw.dance.service.UmsAdminService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import java.security.Principal;
+import java.util.HashMap;
+import java.util.Map;
+import javax.validation.constraints.Pattern;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -18,13 +33,62 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("v1/admin")
 public class UmsAdminController {
 
+  @Value("${jwt.tokenHead}")
+  private String tokenHead;
+
   @Autowired
   private UmsAdminService adminService;
 
   @ApiOperation("获取验证码")
-  @PostMapping(value = "/getAuthCode")
-  public CommonResult<String> getAuthCode(@RequestParam String telephone) {
+  @GetMapping(value = "/getAuthCode")
+  public CommonResult<String> getAuthCode(@ApiParam("手机号") @RequestParam @Validated
+                                          @Pattern(regexp = RegexConstants.REGEX_MOBILE_EXACT, message = "手机号码格式错误")
+                                              String telephone) {
     String authCode = adminService.generateAuthCode(telephone);
     return CommonResult.success(authCode, "获取验证码成功");
+  }
+
+  @ApiOperation("用户注册")
+  @PostMapping(value = "/register")
+  public CommonResult<UmsAdmin> register(@Validated @RequestBody UmsRegisterParam umsRegisterParam) {
+    UmsAdmin umsAdmin = adminService.register(umsRegisterParam);
+    if (umsAdmin == null) {
+      return CommonResult.failed();
+    }
+    return CommonResult.success(umsAdmin);
+  }
+
+  @ApiOperation(value = "登出功能")
+  @RequestMapping(value = "/logout", method = RequestMethod.POST)
+  @ResponseBody
+  public CommonResult logout() {
+    return CommonResult.success(null);
+  }
+
+  @ApiOperation("用户登录")
+  @PostMapping(value = "/login")
+  public CommonResult<Map<String, String>> login(@Validated @RequestBody UmsLoginParam umsLoginParam) {
+    String token = adminService.login(umsLoginParam.getTelephone(), umsLoginParam.getPassword());
+    if (token == null) {
+      return CommonResult.validateFailed("用户名或密码错误");
+    }
+    Map<String, String> tokenMap = new HashMap<>();
+    tokenMap.put("token", token);
+    tokenMap.put("tokenHead", tokenHead);
+    return CommonResult.success(tokenMap);
+  }
+
+  @ApiOperation("获取用户信息")
+  @GetMapping(value = "/info")
+  public CommonResult<UmsAdmin> getAdminInfo(Principal principal) {
+    if (principal == null) {
+      return CommonResult.unauthorized(null);
+    }
+    String telephone = principal.getName();
+    UmsAdmin admin = adminService.getAdminByTelephone(telephone);
+    // Map<String, String> tokenMap = new HashMap<>();
+    // tokenMap.put("token", token);
+    // tokenMap.put("tokenHead", tokenHead);
+    return CommonResult.success(admin);
   }
 }

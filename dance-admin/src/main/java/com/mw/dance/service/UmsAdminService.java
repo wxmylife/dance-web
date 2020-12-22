@@ -1,5 +1,6 @@
 package com.mw.dance.service;
 
+import com.mw.dance.dto.UmsRegisterParam;
 import com.mw.dance.model.UmsAdmin;
 import com.mw.dance.model.UmsResource;
 import java.util.List;
@@ -10,15 +11,15 @@ import org.springframework.security.core.userdetails.UserDetails;
  */
 public interface UmsAdminService {
 
-  UmsAdmin getAdminByUsername(String username);
+  UmsAdmin getAdminByTelephone(String telephone);
 
-  UmsAdmin register(String telephone, String authCode);
+  UmsAdmin register(UmsRegisterParam umsRegisterParam);
 
-  String login(String username, String password);
+  String login(String telephone, String password);
 
   String generateAuthCode(String telephone);
 
   List<UmsResource> getResourceList(Long adminId);
 
-  UserDetails loadUserByUsername(String username);
+  UserDetails loadUserByTelephone(String telephone);
 }

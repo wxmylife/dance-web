@@ -43,6 +43,5 @@ secure:
       - /v1/admin/login
       - /v1/admin/register
       - /v1/admin/getAuthCode
-      - /v1/admin/info
       - /v1/admin/logout
       - /minio/upload

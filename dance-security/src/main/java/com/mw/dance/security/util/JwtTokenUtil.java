@@ -74,7 +74,7 @@ public class JwtTokenUtil {
   /**
    * 从token中获取登录用户名
    */
-  public String getUserNameFromToken(String token) {
+  public String getUserTelephoneFromToken(String token) {
     String username;
     try {
       Claims claims = getClaimsFromToken(token);
@@ -92,7 +92,7 @@ public class JwtTokenUtil {
    * @param userDetails 从数据库中查询出来的用户信息
    */
   public boolean validateToken(String token, UserDetails userDetails) {
-    String username = getUserNameFromToken(token);
+    String username = getUserTelephoneFromToken(token);
     return username.equals(userDetails.getUsername()) && !isTokenExpired(token);
   }
 
@@ -115,9 +115,9 @@ public class JwtTokenUtil {
   /**
    * 根据用户信息生成token
    */
-  public String generateToken(UserDetails userDetails) {
+  public String generateToken(String telephone) {
     Map<String, Object> claims = new HashMap<>();
-    claims.put(CLAIM_KEY_USERNAME, userDetails.getUsername());
+    claims.put(CLAIM_KEY_USERNAME, telephone);
     claims.put(CLAIM_KEY_CREATED, new Date());
     return generateToken(claims);
   }

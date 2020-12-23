@@ -24,6 +24,13 @@ public interface UmsAdminCacheService {
   String getAuthCode(String telephone);
 
   /**
+   * 删除验证码
+   *
+   * @param telephone 手机号
+   */
+  void deleteAuthCode(String telephone);
+
+  /**
    * 获取缓存用户信息
    *
    * @param telephone 手机号

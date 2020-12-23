@@ -7,6 +7,7 @@ import com.mw.dance.dto.UmsLoginParam;
 import com.mw.dance.dto.UmsRegisterParam;
 import com.mw.dance.dto.UpdateAdminPasswordParam;
 import com.mw.dance.model.UmsAdmin;
+import com.mw.dance.service.UmsAdminCacheService;
 import com.mw.dance.service.UmsAdminService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

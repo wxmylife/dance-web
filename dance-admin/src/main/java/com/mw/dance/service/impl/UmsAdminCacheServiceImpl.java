@@ -58,6 +58,11 @@ public class UmsAdminCacheServiceImpl implements UmsAdminCacheService {
     return (String) redisService.get(key);
   }
 
+  @Override public void deleteAuthCode(String telephone) {
+    String key = REDIS_DATABASE + ":" + REDIS_KEY_AUTH_CODE + ":" + telephone;
+    redisService.del(key);
+  }
+
   @Override public UmsAdmin getAdmin(String telephone) {
     String key = REDIS_DATABASE + ":" + REDIS_KEY_ADMIN + ":" + telephone;
     return (UmsAdmin) redisService.get(key);

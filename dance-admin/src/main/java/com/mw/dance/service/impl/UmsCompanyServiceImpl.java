@@ -1,6 +1,7 @@
 package com.mw.dance.service.impl;
 
 import cn.hutool.core.collection.CollUtil;
+import com.github.pagehelper.PageHelper;
 import com.mw.dance.common.exception.Asserts;
 import com.mw.dance.dto.UmsCompanyRegisterParam;
 import com.mw.dance.mapper.UmsCompanyMapper;
@@ -45,5 +46,10 @@ public class UmsCompanyServiceImpl implements UmsCompanyService {
     umsCompany.setName(umsRegisterParam.getName());
     companyMapper.insert(umsCompany);
     return umsCompany;
+  }
+
+  @Override public List<UmsCompany> list(Integer pageSize, Integer pageNum) {
+    PageHelper.startPage(pageNum, pageSize);
+    return companyMapper.selectByExample(new UmsCompanyExample());
   }
 }

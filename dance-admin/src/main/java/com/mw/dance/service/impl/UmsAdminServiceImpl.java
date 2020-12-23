@@ -97,6 +97,9 @@ public class UmsAdminServiceImpl implements UmsAdminService {
     umsAdmin.setUsername(umsRegisterParam.getTelephone());
     umsAdmin.setStatus(1);
     adminMapper.insert(umsAdmin);
+
+    // 验证码充值
+    adminCacheService.deleteAuthCode(umsRegisterParam.getTelephone());
     // 密码重置
     umsAdmin.setPassword(null);
     return umsAdmin;
@@ -208,6 +211,7 @@ public class UmsAdminServiceImpl implements UmsAdminService {
     umsAdmin.setPassword(passwordEncoder.encode(forgetParam.getNewPassword()));
     adminMapper.updateByPrimaryKeySelective(umsAdmin);
     adminCacheService.delAdmin(umsAdmin.getId());
+    adminCacheService.deleteAuthCode(forgetParam.getTelephone());
     return 1;
   }
 

@@ -33,4 +33,4 @@ server:
 logstash:
   host: localhost
 
-debug: true
+#debug: true

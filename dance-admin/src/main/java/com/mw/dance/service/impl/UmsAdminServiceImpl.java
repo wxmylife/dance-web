@@ -102,6 +102,18 @@ public class UmsAdminServiceImpl implements UmsAdminService {
     return umsAdmin;
   }
 
+  @Override public boolean logout(Long adminId) {
+    UmsAdminExample example = new UmsAdminExample();
+    example.createCriteria().andIdEqualTo(adminId);
+    List<UmsAdmin> adminList = adminMapper.selectByExample(example);
+    if (CollUtil.isEmpty(adminList)) {
+      return false;
+    }
+    UmsAdmin umsAdmin = adminList.get(0);
+    adminCacheService.delAdmin(adminId);
+    return adminCacheService.deleteLoginAuth(umsAdmin.getTelephone());
+  }
+
   @Override public String login(String telephone, String password) {
     String token = null;
     try {
@@ -115,8 +127,8 @@ public class UmsAdminServiceImpl implements UmsAdminService {
       UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
       SecurityContextHolder.getContext().setAuthentication(authentication);
       token = jwtTokenUtil.generateToken(telephone);
-
-      insertLoginLog(telephone);
+      // insertLoginLog(telephone);
+      adminCacheService.setLoginAuth(telephone, token);
     } catch (AuthenticationException e) {
       LOGGER.warn("登录异常:{}", e.getMessage());
     }
@@ -219,6 +231,7 @@ public class UmsAdminServiceImpl implements UmsAdminService {
     umsAdmin.setPassword(passwordEncoder.encode(updateParam.getNewPassword()));
     adminMapper.updateByPrimaryKeySelective(umsAdmin);
     adminCacheService.delAdmin(umsAdmin.getId());
+    adminCacheService.deleteLoginAuth(umsAdmin.getTelephone());
     return 1;
   }
 

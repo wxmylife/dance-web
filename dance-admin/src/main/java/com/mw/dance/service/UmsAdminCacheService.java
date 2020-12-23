@@ -45,4 +45,19 @@ public interface UmsAdminCacheService {
    */
   void delAdmin(Long adminId);
 
+  /**
+   * 设置登录凭证缓存
+   *
+   * @param telephone 手机号
+   * @param authToken 用户 token
+   */
+  void setLoginAuth(String telephone, String authToken);
+
+  /**
+   * 删除登录凭证缓存
+   *
+   * @param telephone 手机号
+   */
+  boolean deleteLoginAuth(String telephone);
+
 }

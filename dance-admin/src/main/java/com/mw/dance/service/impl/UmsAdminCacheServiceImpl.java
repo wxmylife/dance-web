@@ -30,11 +30,17 @@ public class UmsAdminCacheServiceImpl implements UmsAdminCacheService {
   @Value("${redis.expire.common}")
   private Long REDIS_EXPIRE;
 
+  @Value("${redis.expire.auth}")
+  private Long REDIS_EXPIRE_AUTH;
+
   @Value("${redis.expire.authCode}")
   private Long REDIS_EXPIRE_AUTH_CODE;
 
   @Value("${redis.key.admin}")
   private String REDIS_KEY_ADMIN;
+
+  @Value("${redis.key.auth}")
+  private String REDIS_KEY_AUTH;
 
   // @Value("${redis.key.member}")
   // private String REDIS_KEY_MEMBER;
@@ -71,6 +77,15 @@ public class UmsAdminCacheServiceImpl implements UmsAdminCacheService {
         LOGGER.warn("cache admin 删除成功");
       }
     }
+  }
 
+  @Override public void setLoginAuth(String telephone, String authToken) {
+    String key = REDIS_DATABASE + ":" + REDIS_KEY_AUTH + ":" + telephone;
+    redisService.set(key, authToken, REDIS_EXPIRE);
+  }
+
+  @Override public boolean deleteLoginAuth(String telephone) {
+    String key = REDIS_DATABASE + ":" + REDIS_KEY_AUTH + ":" + telephone;
+    return redisService.del(key);
   }
 }

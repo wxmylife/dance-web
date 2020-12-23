@@ -17,6 +17,8 @@ public interface UmsAdminService {
 
   UmsAdmin register(UmsRegisterParam umsRegisterParam);
 
+  boolean logout(Long adminId);
+
   String login(String telephone, String password);
 
   String generateAuthCode(String telephone);

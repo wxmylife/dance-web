@@ -19,10 +19,12 @@ redis:
   database: dance
   key:
     admin: 'ums:admin'
+    auth: 'ums:auth'
     resourceList: 'ums:resourceList'
     authCode: 'ums:authCode'
   expire:
     common: 86400 # 24小时
+    auth: 360 # 24小时
     authCode: 90 # 验证码保存90秒
 
 

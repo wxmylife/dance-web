@@ -30,7 +30,7 @@ public class UmsCompany implements Serializable {
     private Integer managerId;
 
     @ApiModelProperty(value = "审核人id")
-    private Integer executorId;
+    private Long executorId;
 
     @ApiModelProperty(value = "营业执照")
     private String businessLicense;
@@ -116,11 +116,11 @@ public class UmsCompany implements Serializable {
         this.managerId = managerId;
     }
 
-    public Integer getExecutorId() {
+    public Long getExecutorId() {
         return executorId;
     }
 
-    public void setExecutorId(Integer executorId) {
+    public void setExecutorId(Long executorId) {
         this.executorId = executorId;
     }
 

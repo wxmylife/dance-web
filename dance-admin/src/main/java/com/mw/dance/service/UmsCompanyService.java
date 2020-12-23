@@ -12,8 +12,17 @@ public interface UmsCompanyService {
   UmsCompany register(UmsCompanyRegisterParam umsRegisterParam);
 
   /**
-   * 审核插叙
+   * 审核查询
    */
   List<UmsCompany> list(Integer pageSize, Integer pageNum);
+
+  /**
+   * 修改公司审核状态
+   *
+   * @param id 公司 id
+   * @param status 状态
+   * @return 操作结果
+   */
+  int updateCompanyStatus(Long id, int status);
 
 }

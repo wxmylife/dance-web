@@ -240,6 +240,10 @@ public class UmsAdminServiceImpl implements UmsAdminService {
   }
 
   @Override public UmsAdmin getItem(Long id) {
+    UmsAdmin umsAdmin = adminMapper.selectByPrimaryKey(id);
+    if (umsAdmin != null) {
+      umsAdmin.setPassword(null);
+    }
     return adminMapper.selectByPrimaryKey(id);
   }
 

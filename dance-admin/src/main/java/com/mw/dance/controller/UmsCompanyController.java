@@ -45,4 +45,17 @@ public class UmsCompanyController {
     List<UmsCompany> companyList = companyService.list(pageSize, pageNum);
     return CommonResult.success(CommonPage.restPage(companyList));
   }
+
+  @ApiOperation("公司状态修改")
+  @PostMapping(value = "/update")
+  public CommonResult update(@RequestParam("id") Long id, @RequestParam("status") Integer status) {
+    if (status > 2) {
+      return CommonResult.failed("操作失败");
+    }
+    if (companyService.updateCompanyStatus(id, status) == 1) {
+      return CommonResult.success(null);
+    } else {
+      return CommonResult.failed();
+    }
+  }
 }

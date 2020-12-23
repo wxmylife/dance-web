@@ -625,52 +625,52 @@ public class UmsCompanyExample {
             return (Criteria) this;
         }
 
-        public Criteria andExecutorIdEqualTo(Integer value) {
+        public Criteria andExecutorIdEqualTo(Long value) {
             addCriterion("executor_id =", value, "executorId");
             return (Criteria) this;
         }
 
-        public Criteria andExecutorIdNotEqualTo(Integer value) {
+        public Criteria andExecutorIdNotEqualTo(Long value) {
             addCriterion("executor_id <>", value, "executorId");
             return (Criteria) this;
         }
 
-        public Criteria andExecutorIdGreaterThan(Integer value) {
+        public Criteria andExecutorIdGreaterThan(Long value) {
             addCriterion("executor_id >", value, "executorId");
             return (Criteria) this;
         }
 
-        public Criteria andExecutorIdGreaterThanOrEqualTo(Integer value) {
+        public Criteria andExecutorIdGreaterThanOrEqualTo(Long value) {
             addCriterion("executor_id >=", value, "executorId");
             return (Criteria) this;
         }
 
-        public Criteria andExecutorIdLessThan(Integer value) {
+        public Criteria andExecutorIdLessThan(Long value) {
             addCriterion("executor_id <", value, "executorId");
             return (Criteria) this;
         }
 
-        public Criteria andExecutorIdLessThanOrEqualTo(Integer value) {
+        public Criteria andExecutorIdLessThanOrEqualTo(Long value) {
             addCriterion("executor_id <=", value, "executorId");
             return (Criteria) this;
         }
 
-        public Criteria andExecutorIdIn(List<Integer> values) {
+        public Criteria andExecutorIdIn(List<Long> values) {
             addCriterion("executor_id in", values, "executorId");
             return (Criteria) this;
         }
 
-        public Criteria andExecutorIdNotIn(List<Integer> values) {
+        public Criteria andExecutorIdNotIn(List<Long> values) {
             addCriterion("executor_id not in", values, "executorId");
             return (Criteria) this;
         }
 
-        public Criteria andExecutorIdBetween(Integer value1, Integer value2) {
+        public Criteria andExecutorIdBetween(Long value1, Long value2) {
             addCriterion("executor_id between", value1, value2, "executorId");
             return (Criteria) this;
         }
 
-        public Criteria andExecutorIdNotBetween(Integer value1, Integer value2) {
+        public Criteria andExecutorIdNotBetween(Long value1, Long value2) {
             addCriterion("executor_id not between", value1, value2, "executorId");
             return (Criteria) this;
         }

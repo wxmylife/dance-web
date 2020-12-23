@@ -10,7 +10,7 @@
     <result column="district" jdbcType="INTEGER" property="district" />
     <result column="address" jdbcType="VARCHAR" property="address" />
     <result column="manager_id" jdbcType="INTEGER" property="managerId" />
-    <result column="executor_id" jdbcType="INTEGER" property="executorId" />
+    <result column="executor_id" jdbcType="BIGINT" property="executorId" />
     <result column="business_license" jdbcType="VARCHAR" property="businessLicense" />
     <result column="business_license_number" jdbcType="VARCHAR" property="businessLicenseNumber" />
     <result column="telephone" jdbcType="VARCHAR" property="telephone" />
@@ -121,7 +121,7 @@
       create_time, update_time)
     values (#{name,jdbcType=VARCHAR}, #{legal,jdbcType=VARCHAR}, #{province,jdbcType=INTEGER}, 
       #{city,jdbcType=INTEGER}, #{district,jdbcType=INTEGER}, #{address,jdbcType=VARCHAR}, 
-      #{managerId,jdbcType=INTEGER}, #{executorId,jdbcType=INTEGER}, #{businessLicense,jdbcType=VARCHAR}, 
+      #{managerId,jdbcType=INTEGER}, #{executorId,jdbcType=BIGINT}, #{businessLicense,jdbcType=VARCHAR}, 
       #{businessLicenseNumber,jdbcType=VARCHAR}, #{telephone,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, 
       #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
   </insert>
@@ -197,7 +197,7 @@
         #{managerId,jdbcType=INTEGER},
       </if>
       <if test="executorId != null">
-        #{executorId,jdbcType=INTEGER},
+        #{executorId,jdbcType=BIGINT},
       </if>
       <if test="businessLicense != null">
         #{businessLicense,jdbcType=VARCHAR},
@@ -253,7 +253,7 @@
         manager_id = #{record.managerId,jdbcType=INTEGER},
       </if>
       <if test="record.executorId != null">
-        executor_id = #{record.executorId,jdbcType=INTEGER},
+        executor_id = #{record.executorId,jdbcType=BIGINT},
       </if>
       <if test="record.businessLicense != null">
         business_license = #{record.businessLicense,jdbcType=VARCHAR},
@@ -288,7 +288,7 @@
       district = #{record.district,jdbcType=INTEGER},
       address = #{record.address,jdbcType=VARCHAR},
       manager_id = #{record.managerId,jdbcType=INTEGER},
-      executor_id = #{record.executorId,jdbcType=INTEGER},
+      executor_id = #{record.executorId,jdbcType=BIGINT},
       business_license = #{record.businessLicense,jdbcType=VARCHAR},
       business_license_number = #{record.businessLicenseNumber,jdbcType=VARCHAR},
       telephone = #{record.telephone,jdbcType=VARCHAR},
@@ -324,7 +324,7 @@
         manager_id = #{managerId,jdbcType=INTEGER},
       </if>
       <if test="executorId != null">
-        executor_id = #{executorId,jdbcType=INTEGER},
+        executor_id = #{executorId,jdbcType=BIGINT},
       </if>
       <if test="businessLicense != null">
         business_license = #{businessLicense,jdbcType=VARCHAR},
@@ -356,7 +356,7 @@
       district = #{district,jdbcType=INTEGER},
       address = #{address,jdbcType=VARCHAR},
       manager_id = #{managerId,jdbcType=INTEGER},
-      executor_id = #{executorId,jdbcType=INTEGER},
+      executor_id = #{executorId,jdbcType=BIGINT},
       business_license = #{businessLicense,jdbcType=VARCHAR},
       business_license_number = #{businessLicenseNumber,jdbcType=VARCHAR},
       telephone = #{telephone,jdbcType=VARCHAR},
